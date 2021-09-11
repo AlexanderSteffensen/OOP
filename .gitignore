@@ -1,0 +1,6 @@
+# MacOS stuff
+.DS_Store
+
+#Other stuff
+.idea
+obj
