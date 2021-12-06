@@ -1,18 +1,23 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Channels;
-using ExamAssignment;
+using DashSystem.Core;
+using DashSystem.Core.Transactions;
 
-namespace DashSystemUI
+namespace DashSystem.UI
 {
     public class DashSystemCLI : IDashSystemUI
     {
         private IDashSystem _dashSystem;
-        
+        private bool _running;
+
         public DashSystemCLI(IDashSystem dashSystem)
         {
             _dashSystem = dashSystem;
         }
-        
+
+        public event CommandEntered UserEnteredCommand;
+
         public void DisplayUserNotFound(string username)
         {
             Console.WriteLine("User not found!");
@@ -67,12 +72,23 @@ namespace DashSystemUI
             Console.WriteLine("An general error has occured.");
         }
 
+        public void DisplayGeneralMessage(string message)
+        {
+            Console.WriteLine(message);
+        }
+
         public void Start()
         {
+            _running = true;
             DisplayWelcome();
-            
-            
-            
+            DisplayProducts();
+
+            while (_running)
+            {
+                Console.Write("Skriv venligst din kommando: ");
+                string command = Console.ReadLine();
+                UserEnteredCommand?.Invoke(command); 
+            }
         }
 
         public void DisplayWelcome()
@@ -80,12 +96,16 @@ namespace DashSystemUI
             Console.WriteLine("Velkommen til Stregsystemet, du kan sætte streger på følgende måde: \n" +
                               "- Indtast din brugernavn og et produkt ID (adskilt med mellemrum). " +
                               "Købet vil da blive registreret uden yderligere indput." +
-                              "Der vil vises en bekræftelse af købet.");
+                              "Der vil vises en bekræftelse af købet.\n");
         }
 
         public void DisplayProducts()
         {
-            
+            foreach (Product product in _dashSystem.ActiveProducts)
+            {
+                Console.WriteLine(product.ID + ". "+ product.Name + " " + product.Price);
+            }
+            Console.WriteLine();
         }
 
         //public event StregsystemEvent CommandEntered;

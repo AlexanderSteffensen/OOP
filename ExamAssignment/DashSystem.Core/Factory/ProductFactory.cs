@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using Microsoft.VisualBasic.FileIO;
 
-namespace ExamAssignment.Factory
+namespace DashSystem.Core
 {
     public class ProductFactory : Factory<Product>
     {
@@ -24,7 +22,7 @@ namespace ExamAssignment.Factory
                     decimal price = Convert.ToDecimal(fields[2]);
                     bool active = Convert.ToBoolean(Convert.ToInt32(fields[3]));
 
-                    Console.WriteLine(name);
+                    
              
                     
                     Items.Add(new Product(id, name, price, active));

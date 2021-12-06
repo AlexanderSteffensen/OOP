@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using ExamAssignment.Factory;
-using Microsoft.VisualBasic.FileIO;
+using DashSystem.Core.Exceptions;
+using DashSystem.Core.Factory;
+using DashSystem.Core.Transactions;
 
-namespace ExamAssignment
+namespace DashSystem.Core
 {
     public class DashSystem : IDashSystem
     {
@@ -13,9 +12,7 @@ namespace ExamAssignment
         private UserFactory _userFactory;
         private List<User> _users;
         private List<Product> _products;
-        private List<Product> _activeProducts;
         private List<Transaction> _transactions;
-        private IEnumerable<Product> _activeProducts1;
         private int _transactionId;
 
         public DashSystem()
@@ -32,10 +29,11 @@ namespace ExamAssignment
 
         public void ExecuteTransaction(Transaction transaction)
         {
-            transaction.Execute();   
+            transaction.Execute();
+            _transactions.Add(transaction);
         }
 
-        IEnumerable<Product> IDashSystem.ActiveProducts => _activeProducts1;
+        IEnumerable<Product> IDashSystem.ActiveProducts => _products.FindAll(product => product.Active);
 
         public InsertCashTransaction AddCreditsToAccount(User user, int amount)
         {
@@ -53,12 +51,15 @@ namespace ExamAssignment
 
         public Product GetProductByID(int id)
         {
-            return _products.Find(product => product.ID == id);
-        }
-
-        IEnumerable<Transaction> IDashSystem.GetTransactions(User user, int count)
-        {
-            return GetTransactions(user, count);
+            try
+            {
+                return _products.Find(product => product.ID == id);
+            }
+            catch (ProductDoesntExistException e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public List<User> GetUsers(Func<User, bool> predicate)
@@ -89,7 +90,7 @@ namespace ExamAssignment
 
         //public event UserBalanceNotification UserBalanceWarning;
 
-        public List<Transaction> GetTransactions(User user, int count)
+        public IEnumerable<Transaction> GetTransactions(User user, int count)
         {
             List<Transaction> allTransactions = _transactions;
             List<Transaction> transactions = new List<Transaction>();
@@ -108,13 +109,6 @@ namespace ExamAssignment
             }
             return transactions;
         }
-
-        public List<Product> ActiveProducts()
-        {
-            return _activeProducts;
-        }
-        
-
 
     }
 }

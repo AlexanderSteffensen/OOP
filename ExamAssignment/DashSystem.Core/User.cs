@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace ExamAssignment
+namespace DashSystem.Core
 {
     public class User : IComparable<User>
     {

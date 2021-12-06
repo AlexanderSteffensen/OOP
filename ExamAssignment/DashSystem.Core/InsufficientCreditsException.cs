@@ -1,6 +1,6 @@
 using System;
 
-namespace ExamAssignment
+namespace DashSystem.Core
 {
     public class InsufficientCreditsException : Exception
     {

@@ -1,7 +1,6 @@
 using System;
-using System.Security.Cryptography;
 
-namespace ExamAssignment
+namespace DashSystem.Core
 {
     public class Product
     {
@@ -36,17 +35,33 @@ namespace ExamAssignment
         }
 
         public decimal Price { get; }
-        private bool Active;
+        public bool Active { get; private set; }
         public bool CanBeBoughtOnCredit { get; private set; }
-
-
-
+        
         public override string ToString()
         {
             return ID + ". " + Name + " " + Price;
         }
 
+        public void Activate()
+        {
+            Active = true;
+        }
         
+        public void Deactivate()
+        {
+            Active = false;
+        }
+
+        public void CreditOn()
+        {
+            CanBeBoughtOnCredit = true;
+        }
+        
+        public void CreditOff()
+        {
+            CanBeBoughtOnCredit = false;
+        }
 
 
 

@@ -1,9 +1,12 @@
-using ExamAssignment;
+using DashSystem.Core.Transactions;
+using DashSystem.Core;
 
-namespace DashSystemUI
+namespace DashSystem.UI
 {
+    public delegate void CommandEntered(string command);
     public interface IDashSystemUI
     {
+        event CommandEntered UserEnteredCommand;
         void DisplayUserNotFound(string username); 
         void DisplayProductNotFound(string product); 
         void DisplayUserInfo(User user); 
@@ -13,7 +16,8 @@ namespace DashSystemUI
         void DisplayUserBuysProduct(int count, BuyTransaction transaction); 
         void Close(); 
         void DisplayInsufficientCash(User user, Product product); 
-        void DisplayGeneralError(string errorString); 
+        void DisplayGeneralError(string errorString);
+        void DisplayGeneralMessage(string message);
         void Start(); 
        // event StregsystemEvent CommandEntered;
     }

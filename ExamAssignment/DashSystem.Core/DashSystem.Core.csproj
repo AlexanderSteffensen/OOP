@@ -1,14 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>ExamAssignment</RootNamespace>
+        <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CsvHelper" Version="27.2.0" />
-      <PackageReference Include="LumenWorks.Framework.IO" Version="3.8.0" />
+      <Reference Include="DashSystem.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      </Reference>
     </ItemGroup>
 
 </Project>

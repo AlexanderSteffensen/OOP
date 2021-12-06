@@ -6,4 +6,9 @@
         <RootNamespace>DashSystemController</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\DashSystem.Core\DashSystem.Core.csproj" />
+      <ProjectReference Include="..\DashSystem.UI\DashSystem.UI.csproj" />
+    </ItemGroup>
+
 </Project>

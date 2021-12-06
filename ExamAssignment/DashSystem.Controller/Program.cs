@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ExamAssignment.Core;
+using ExamAssignment.Core.UI;
+using ExamAssignment.UI;
 
 namespace DashSystemController
 {
@@ -6,7 +8,12 @@ namespace DashSystemController
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            IDashSystem ds = new DashSystem();
+            IDashSystemUI ui = new DashSystemCLI(ds);
+            DashSystemController controller = new DashSystemController(ui, ds);
+            
+            ui.Start();
+
         }
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using DashSystem.Core;
+using DashSystem.Core.Transactions;
 
-namespace ExamAssignment
+namespace DashSystem.Core
 {
     public interface IDashSystem
     {

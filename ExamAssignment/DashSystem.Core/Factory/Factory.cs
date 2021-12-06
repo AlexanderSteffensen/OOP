@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ExamAssignment.Factory
+namespace DashSystem.Core
 {
     public abstract class Factory<T>
     {

@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.VisualBasic.FileIO;
 
-namespace ExamAssignment.Factory
+namespace DashSystem.Core.Factory
 {
     public class UserFactory : Factory<User>
     {
@@ -23,6 +22,7 @@ namespace ExamAssignment.Factory
                     string username = fields[3];
                     decimal balance = Convert.ToDecimal(fields[4]);
                     string email = fields[5];
+                    
 
                     Items.Add(new User(id, firstname, lastname, username, balance, email));
                 }

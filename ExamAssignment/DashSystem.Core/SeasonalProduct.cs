@@ -1,6 +1,7 @@
 using System;
+using DashSystem.Core;
 
-namespace ExamAssignment
+namespace DashSystem
 {
     public class SeasonalProduct : Product
     {
