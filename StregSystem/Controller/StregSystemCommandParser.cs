@@ -82,11 +82,6 @@ namespace Controller
             IEnumerable<Transaction> transactions = _stregSystem.GetTransactions(user, 10);
             _stregSystemUi.DisplayUserInfo(user);
             _stregSystemUi.DisplayTransactions(transactions);
-            
-            if (user.Balance < 50)
-            {
-                _stregSystemUi.DisplayUserBalanceWarning();
-            }
         }
 
         public void UserBuyProductCommand(User user, int productId)

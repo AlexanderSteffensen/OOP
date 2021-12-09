@@ -23,15 +23,27 @@ namespace Core
             _users = _userFactory.Items;
             _transactionId = 1;
             _transactions = new List<Transaction>();
+            foreach (User user in _users)
+            {
+                user.UserBalanceChanged += CheckUserBalance;
+            }
         }
 
-        // TODO: write funcions for DashSystem class
-
+        public void CheckUserBalance(User user)
+        {
+            if (user.Balance < 50)
+            {
+                UserBalanceWarning?.Invoke(user);
+            }
+        }
+        
         public void ExecuteTransaction(Transaction transaction)
         {
             transaction.Execute();
             _transactions.Add(transaction);
         }
+
+        public event UserBalanceNotification UserBalanceWarning;
 
         IEnumerable<Product> IStregSystem.ActiveProducts => _products.FindAll(product => product.Active);
 
@@ -87,9 +99,7 @@ namespace Core
 
             throw new Exception("No user with found with that username");
         }
-
-        //public event UserBalanceNotification UserBalanceWarning;
-
+        
         public IEnumerable<Transaction> GetTransactions(User user, int count)
         {
             List<Transaction> allTransactions = _transactions;

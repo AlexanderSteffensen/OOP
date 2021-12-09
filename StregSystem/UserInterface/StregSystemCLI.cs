@@ -13,6 +13,7 @@ namespace UserInterface
         public StregSystemCLI(IStregSystem stregSystem)
         {
             _stregSystem = stregSystem;
+            _stregSystem.UserBalanceWarning += DisplayUserBalanceWarning;
         }
 
         public event CommandEntered UserEnteredCommand;
@@ -22,9 +23,9 @@ namespace UserInterface
             Console.WriteLine("User not found!");
         }
 
-        public void DisplayUserBalanceWarning()
+        public void DisplayUserBalanceWarning(User user)
         {
-            Console.WriteLine("This user has under 50 credits left");
+            Console.WriteLine("User " + user.Username + " has under 50 credits left");
         }
 
         public void DisplayProductNotFound()

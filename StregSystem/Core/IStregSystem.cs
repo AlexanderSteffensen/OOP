@@ -4,6 +4,7 @@ using Core.Transactions;
 
 namespace Core
 {
+    public delegate void UserBalanceNotification(User user);
     public interface IStregSystem
     {
         IEnumerable<Product> ActiveProducts { get; } 
@@ -15,6 +16,6 @@ namespace Core
         User GetUserByUsername(string username);
 
         public void ExecuteTransaction(Transaction transaction);
-        //event UserBalanceNotification UserBalanceWarning;
+        event UserBalanceNotification UserBalanceWarning;
     }
 }

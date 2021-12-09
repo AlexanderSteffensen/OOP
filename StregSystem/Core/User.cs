@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Core
 {
+    public delegate void OnUserBalanceChanged(User user);
     public class User : IComparable<User>
     {
         public User(int id, string firstname, string lastname, string username, decimal balance, string email)
@@ -101,11 +102,20 @@ namespace Core
             }
         }
 
-        public decimal Balance { get; set; }
+        private decimal _balance;
 
-        public void UserBalanceNotification(User user, decimal balance)
+        public decimal Balance
         {
-            // TODO: Når brugerens saldo går under 50 kroner skal brugeren advares, og ved yderligere køb bliver der vist en advarselsbesked. Introducér et deleegate til denne slags hændelser
+            get
+            {
+                return _balance;
+            }
+            
+            set
+            {
+                _balance = value;
+                UserBalanceChanged?.Invoke(this);
+            }
         }
 
         public int CompareTo(User other)
@@ -133,5 +143,8 @@ namespace Core
         {
             return Username.GetHashCode();
         }
+
+        public event OnUserBalanceChanged UserBalanceChanged;
     }
+    
 }

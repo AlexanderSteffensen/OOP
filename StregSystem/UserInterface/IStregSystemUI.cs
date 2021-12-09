@@ -10,7 +10,7 @@ namespace UserInterface
         event CommandEntered UserEnteredCommand;
         void DisplayUserNotFound(string username);
         void DisplayTransactions(IEnumerable<Transaction> transactions);
-        void DisplayUserBalanceWarning();
+        void DisplayUserBalanceWarning(User user);
         void DisplayProductNotFound(); 
         void DisplayUserInfo(User user); 
         void DisplayTooManyArgumentsError(string command); 
