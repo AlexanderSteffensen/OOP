@@ -1,5 +1,7 @@
+using System;
 using System.Security.Cryptography.X509Certificates;
 using Core;
+using Core.Transactions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -43,8 +45,48 @@ namespace Test
             Assert.Equal(id, testProduct.ID);
             Assert.Equal(name, testProduct.Name);
         }
-        
-        
+
+        [Fact]
+        public void BuyTransactionTest()
+        {
+            //Arrange
+            StregSystem stregSystem = new StregSystem();
+
+            User testUser = new User(20, "Alex", "Steffensen", "alexstef", 2000m, "alex@gmail.com");
+
+            decimal userInitialBalance = testUser.Balance;
+
+            Product testProduct = new Product(7654, "Drikkeyoghurt", 200m, true);
+
+            BuyTransaction buyTransaction = new BuyTransaction(1, testUser, DateTime.Now, testProduct, 3);
+            
+            _testOutputHelper.WriteLine(testUser.Balance.ToString());
+            
+            //Act
+            buyTransaction.Execute();
+            _testOutputHelper.WriteLine(testUser.Balance.ToString());
+            //Assert
+            Assert.Equal(userInitialBalance - (3 * testProduct.Price), testUser.Balance);
+        }
+
+        [Fact]
+        public void InsertCashTransactionTest()
+        {
+            //Arrange
+            StregSystem stregSystem = new StregSystem();
+
+            User testUser = new User(20, "Alex", "Steffensen", "alexstef", 2000m, "alex@gmail.com");
+            
+            decimal userInitialBalance = testUser.Balance;
+
+            InsertCashTransaction insertCashTransaction = new InsertCashTransaction(2, testUser, DateTime.Now, 2000m);
+
+            //Act
+            insertCashTransaction.Execute();
+            
+            //Assert
+            Assert.Equal(userInitialBalance + insertCashTransaction.Price, testUser.Balance);
+        }
         
     }
 }

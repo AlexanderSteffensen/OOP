@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using Core.Exceptions;
-using Core.Factory;
 using Core.Transactions;
 
 namespace Core
 {
     public class StregSystem : IStregSystem
     {
-        private ProductFactory _productFactory;
-        private UserFactory _userFactory;
+        private IDataReader _dataReader;
         private List<User> _users;
         private List<Product> _products;
         private List<Transaction> _transactions = new List<Transaction>();
@@ -17,10 +15,9 @@ namespace Core
 
         public StregSystem()
         {
-            _productFactory = new ProductFactory();
-            _userFactory = new UserFactory();
-            _products = _productFactory.Items;
-            _users = _userFactory.Items;
+            _dataReader = new DataReader();
+            _products = _dataReader.GetProducts();
+            _users = _dataReader.GetUsers();
             _transactionId = 1;
             _transactions = new List<Transaction>();
             foreach (User user in _users)

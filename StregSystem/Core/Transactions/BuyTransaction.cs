@@ -5,7 +5,7 @@ namespace Core.Transactions
 {
     public class BuyTransaction : Transaction
     {
-        public BuyTransaction(int id, User user, DateTime date, Product product, int amount) : base(id, user, date, amount * product.Price)
+        public BuyTransaction(int id, User user, DateTime date, Product product, int amount) : base(id, user, date, product.Price)
         {
             if (!product.Active)
             {
