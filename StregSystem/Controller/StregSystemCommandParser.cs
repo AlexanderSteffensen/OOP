@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Core;
+using Core.Exceptions;
 using Core.Transactions;
 using UserInterface;
 
@@ -40,9 +41,10 @@ namespace Controller
                 if (splittedCommand[0] == adminCommand.Key)
                 {
                     adminCommand.Value(splittedCommand);
-                    break;
+                    return;
                 }
             }
+            _stregSystemUi.DisplayAdminCommandNotFoundMessage(command);
         }
 
         public void ParseCommand(string command)
@@ -50,26 +52,26 @@ namespace Controller
             string[] splittedCommand = command.Split(" ");
             
             User user;
-            
+
             try
             {
                 user = _stregSystem.GetUserByUsername(splittedCommand[0]);
             }
-            catch (Exception e)
+            catch (UserDoesntExistException e)
             {
-                _stregSystemUi.DisplayUserNotFound(splittedCommand[0]);
+                _stregSystemUi.DisplayUserNotFound(e.Username);
                 return;
             }
-
+            
             switch (splittedCommand.Length)
             {
                 case 1: UserInformationCommand(user);
                     break;
                 
-                case 2 : UserBuyProductCommand(user, Convert.ToInt32(splittedCommand[1]));
+                case 2 : UserBuyProductCommand(user, 1, Convert.ToInt32(splittedCommand[1]));
                     break;
                 
-                case 3 : UserMultiBuyProductCommand(user, Convert.ToInt32(splittedCommand[1]), Convert.ToInt32(splittedCommand[2]));
+                case 3 : UserBuyProductCommand(user, Convert.ToInt32(splittedCommand[1]), Convert.ToInt32(splittedCommand[2]));
                     break;
                 
                 default: _stregSystemUi.DisplayTooManyArgumentsError(command);
@@ -82,50 +84,50 @@ namespace Controller
             IEnumerable<Transaction> transactions = _stregSystem.GetTransactions(user, 10);
             _stregSystemUi.DisplayUserInfo(user);
             _stregSystemUi.DisplayTransactions(transactions);
+            if (user.Balance < 50)
+            {
+                _stregSystemUi.DisplayUserBalanceWarning(user);
+            }
         }
 
-        public void UserBuyProductCommand(User user, int productId)
+        public void UserBuyProductCommand(User user, int amount, int productId)
         {
             Product product;
             try
             {
                 product = _stregSystem.GetProductByID(productId);
             }
-            catch (Exception e)
+            catch (ProductDoesntExistException e)
             {
-                _stregSystemUi.DisplayProductNotFound();
+                _stregSystemUi.DisplayProductNotFound(e.Id);
                 return;
             }
-            
-            BuyTransaction buyTransaction = _stregSystem.BuyProduct(user, product, 1);
-            
-            _stregSystem.ExecuteTransaction(buyTransaction);
-            
-            _stregSystemUi.DisplayUserBuysProduct(buyTransaction);
-        }
 
-        public void UserMultiBuyProductCommand(User user, int amount, int productId)
-        {
-            Product product;
+            BuyTransaction buyTransaction;
+            
             try
             {
-                product = _stregSystem.GetProductByID(productId);
+                buyTransaction = _stregSystem.BuyProduct(user, product, amount);
             }
-            catch (Exception e)
+            catch (ProductNotActiveException e)
             {
-                _stregSystemUi.DisplayProductNotFound();
+                _stregSystemUi.DisplayProductNotActive(e.Product);
                 return;
             }
+            
 
+            try
+            {
+                buyTransaction.Execute();
+            }
+            catch (InsufficientCreditsException e)
+            {
+                _stregSystemUi.DisplayInsufficientCash(e.User, amount, e.Product);
+                return;
+            }
             
-            
-            BuyTransaction buyTransaction = _stregSystem.BuyProduct(user, product, amount);
-            
-            _stregSystem.ExecuteTransaction(buyTransaction);
-            
+            _stregSystem.AddTransaction(buyTransaction);
             _stregSystemUi.DisplayUserBuysProduct(amount,buyTransaction);
-            
-            
         }
     }
 }

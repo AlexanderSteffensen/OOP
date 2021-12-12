@@ -6,7 +6,9 @@ namespace Core.Exceptions
     {
         public ProductDoesntExistException(int id)
         {
-            
+            Id = id;
         }
+
+        public int Id;
     }
 }

@@ -146,5 +146,4 @@ namespace Core
 
         public event OnUserBalanceChanged UserBalanceChanged;
     }
-    
 }

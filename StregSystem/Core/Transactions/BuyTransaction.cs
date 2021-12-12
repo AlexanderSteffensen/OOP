@@ -1,4 +1,5 @@
 using System;
+using Core.Exceptions;
 
 namespace Core.Transactions
 {
@@ -6,6 +7,10 @@ namespace Core.Transactions
     {
         public BuyTransaction(int id, User user, DateTime date, Product product, int amount) : base(id, user, date, amount * product.Price)
         {
+            if (!product.Active)
+            {
+                throw new ProductNotActiveException(product);
+            }
             Product = product;
             _amount = amount;
         }

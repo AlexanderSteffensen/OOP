@@ -37,9 +37,8 @@ namespace Core
             }
         }
         
-        public void ExecuteTransaction(Transaction transaction)
+        public void AddTransaction(Transaction transaction)
         {
-            transaction.Execute();
             _transactions.Add(transaction);
         }
 
@@ -63,15 +62,7 @@ namespace Core
 
         public Product GetProductByID(int id)
         {
-            try
-            {
-                return _products.Find(product => product.ID == id);
-            }
-            catch (ProductDoesntExistException e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return _products.Find(product => product.ID == id) ?? throw new ProductDoesntExistException(id);
         }
 
         public List<User> GetUsers(Func<User, bool> predicate)
@@ -89,15 +80,7 @@ namespace Core
 
         public User GetUserByUsername(string username)
         {
-            foreach (User user in _users)
-            {
-                if (user.Username == username)
-                {
-                    return user;
-                }
-            }
-
-            throw new Exception("No user with found with that username");
+            return _users.Find(user => user.Username == username) ?? throw new UserDoesntExistException(username);
         }
         
         public IEnumerable<Transaction> GetTransactions(User user, int count)

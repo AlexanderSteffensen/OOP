@@ -22,10 +22,16 @@ namespace Core.Factory
                     decimal price = Convert.ToDecimal(fields[2]);
                     bool active = Convert.ToBoolean(Convert.ToInt32(fields[3]));
 
+                    if (fields[4] != "")
+                    {
+                        Items.Add(new SeasonalProduct(id, name, price, DateTime.Now < DateTime.Parse(fields[4]), DateTime.Now, DateTime.Parse(fields[4])));
+                    }
+                    else
+                    {
+                        Items.Add(new Product(id, name, price, active));    
+                    }
                     
-             
                     
-                    Items.Add(new Product(id, name, price, active));
                 }
             }
         }

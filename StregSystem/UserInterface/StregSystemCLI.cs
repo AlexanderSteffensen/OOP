@@ -20,7 +20,7 @@ namespace UserInterface
 
         public void DisplayUserNotFound(string username)
         {
-            Console.WriteLine("User not found!");
+            Console.WriteLine("User with username " + username + " not found!");
         }
 
         public void DisplayUserBalanceWarning(User user)
@@ -28,9 +28,9 @@ namespace UserInterface
             Console.WriteLine("User " + user.Username + " has under 50 credits left");
         }
 
-        public void DisplayProductNotFound()
+        public void DisplayProductNotFound(int id)
         {
-            Console.WriteLine("Product not found!");
+            Console.WriteLine("Product with id " + id + " not found!");
         }
 
         public void DisplayUserInfo(User user)
@@ -52,11 +52,6 @@ namespace UserInterface
             Console.WriteLine("Admin command not found!");
         }
 
-        public void DisplayUserBuysProduct(BuyTransaction transaction)
-        {
-            Console.WriteLine("Bruger " + transaction.User + " købte 1 " + transaction.Product.Name + " til " + transaction.Price);
-        }
-
         public void DisplayUserBuysProduct(int count, BuyTransaction transaction)
         {
             Console.WriteLine("Bruger " + transaction.User + " købte " + count + " " + transaction.Product.Name + " til " + transaction.Price);
@@ -68,14 +63,14 @@ namespace UserInterface
             _running = false;
         }
 
-        public void DisplayInsufficientCash(User user, Product product)
+        public void DisplayInsufficientCash(User user,int amount, Product product)
         {
-            Console.WriteLine("User " + user.Username + " does not have enough cash to buy " + product.Name);
+            Console.WriteLine("User " + user.Username + " does not have enough cash to buy " + amount + " " + product.Name);
         }
 
         public void DisplayGeneralError(string errorString)
         {
-            Console.WriteLine("An general error has occured.");
+            Console.WriteLine(errorString);
         }
 
         public void DisplayGeneralMessage(string message)
@@ -93,8 +88,16 @@ namespace UserInterface
             {
                 Console.Write("Skriv venligst din kommando: ");
                 string command = Console.ReadLine();
+                
+                Console.Clear();
+                
                 UserEnteredCommand?.Invoke(command); 
             }
+        }
+
+        public void DisplayProductNotActive(Product product)
+        {
+            Console.WriteLine("Product " + product.ID + " " + product.Name + " is not active.");
         }
 
         public void DisplayWelcome()

@@ -15,7 +15,7 @@ namespace Core
         List<User> GetUsers(Func<User, bool> predicate); 
         User GetUserByUsername(string username);
 
-        public void ExecuteTransaction(Transaction transaction);
+        public void AddTransaction(Transaction transaction);
         event UserBalanceNotification UserBalanceWarning;
     }
 }
